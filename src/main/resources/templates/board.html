@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <!-- Toast UI Grid CSS 및 JS 파일 추가 -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
+    <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+<div>
+    <div>
+        <h1 style="margin-bottom: 50px; margin-top: 50px; text-align: center">게시판</h1>
+        <div class="btn-wrapper" style="margin-bottom: 10px;">
+
+            <div class="btn-wrapper" style="margin-bottom: 10px;">
+                <button id="deleteBtn" th:class="btnStyle" style="float: right; margin-left: 20px;">삭제</button>
+                <button id="updateBtn" th:class="btnStyle" style="float: right; margin-left: 20px;">수정</button>
+                <button id="saveBtn" class="transactionBtn" th:class="btnStyle" style="float: right;">등록</button>
+                <button id="appendBtn" th:class="btnStyle" style="float: right;">추가</button>
+            </div>
+        </div>
+        <!-- Toast Grid Load -->
+        <div id="grid"></div>
+
+    </div>
+</div>
+</body>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const container = document.getElementById("grid");
+            let id;
+            const dataSource = {
+                api: {
+                    readData: { url: '/api/posts', method: 'GET' },
+                    createData: { url: '/api/posts', method: 'POST' },
+                    updateData: { url: '/api/posts', method: 'PUT' },
+                    deleteData: { url: () => `/api/posts/${id}`, method: 'DELETE' }
+                },
+                contentType: 'application/json; charset=utf-8',
+                initialRequest: true
+            };
+            const grid = new tui.Grid({
+                el: container,
+                data: dataSource,
+                rowHeaders: ['rowNum'],
+                columns: [
+                    {
+                        header: '제목',
+                        name: 'title',
+                        sortable: true,                 // [선택] 컬럼의 정렬 여부
+                        resizable: true,                // [선택] 컬럼의 리사이즈 여부 옵션
+                        editor: 'text',                 // [선택] 수정 옵션
+                    },
+                    {
+                        header: '내용',
+                        name: 'content',
+                        sortable: true,                 // [선택] 컬럼의 정렬 여부
+                        resizable: true,                // [선택] 컬럼의 리사이즈 여부 옵션
+                        editor: 'text',                 // [선택] 수정 옵션
+                    },
+                    {
+                        header: '작성자',
+                        name: 'author',
+                        sortable: true,                 // [선택] 컬럼의 정렬 여부
+                        resizable: true,                // [선택] 컬럼의 리사이즈 여부 옵션
+                        editor: 'text',                 // [선택] 수정 옵션
+                    },
+                    {
+                        header: '작성일시',            // [필수] 컬럼 이름
+                        name: 'createdAt',               // [필수] 컬럼 매핑 이름 값
+                        sortable: true,                // [선택] 컬럼의 정렬 여부
+                        resizable: true,               // [선택] 컬럼의 리사이즈 여부 옵션
+                        align: 'center',               // [선택] 텍스트 정렬 옵션
+                    },
+                ]
+            });
+            const appendBtn = document.getElementById('appendBtn');
+            const updateBtn = document.getElementById('updateBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const deleteBtn = document.getElementById('deleteBtn');
+
+
+            grid.on('click', ev => {
+                const { rowKey } = ev;
+                data = grid.getData().filter(data => data.rowKey === rowKey)[0];
+                deleteBtn.addEventListener('click', (e) => {
+                    if (rowKey !== null) {
+                        id = data.id;
+                        grid.removeRow(rowKey);
+                    }
+                    grid.refreshLayout();
+                    grid.request('deleteData');
+                });
+                grid.refreshLayout();
+            });
+
+             appendBtn.addEventListener('click', () => {
+                grid.appendRow({
+                        "title": "",
+                        "content": "",
+                        "author": "",
+                    },
+                    {focus: true}
+                );
+            });
+
+            saveBtn.addEventListener('click', (e) => {
+                grid.request('createData');
+                grid.refreshLayout();
+            });
+
+            updateBtn.addEventListener('click', (e) => {
+                grid.request('updateData');
+                grid.refreshLayout();
+            });
+
+        });
+</script>
+</html>

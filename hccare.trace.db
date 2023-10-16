@@ -1,0 +1,43 @@
+2023-10-16 14:56:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TB_POST" not found (this database is empty); SQL statement:
+INSERT INTO tb_post (
+         
+        id
+        , title
+        , content
+        , writer
+        , view_cnt
+        , notice_yn
+        , delete_yn
+        , created_date
+        , modified_date
+     
+        ) VALUES (
+        ?
+        , ?
+        , ?
+        , ?
+        , 0
+        , ?
+        , 0
+        , NOW()
+        , NULL
+        ) [42104-214]
+2023-10-16 14:57:54 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TB_POST" not found (this database is empty); SQL statement:
+SELECT
+         
+        id
+        , title
+        , content
+        , writer
+        , view_cnt
+        , notice_yn
+        , delete_yn
+        , created_date
+        , modified_date
+     
+        FROM
+        tb_post
+        ORDER BY
+        id DESC [42104-214]

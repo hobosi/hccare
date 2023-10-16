@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cote.hccare.mapper.PostMapper">
+
+    <!-- tb_post 테이블 전체 컬럼 -->
+    <sql id="postColumns">
+        id,
+        title,
+        content,
+        author,
+        created_at
+    </sql>
+
+
+    <!-- 게시글 저장 -->
+    <insert id="save" parameterType="cote.hccare.domain.PostRequest">
+        INSERT INTO tb_post (
+            title,
+            content,
+            author,
+            created_at
+        ) VALUES (
+            #{title},
+            #{content},
+            #{author},
+            NOW()
+        )
+    </insert>
+
+    <!-- 게시글 상세정보 조회 -->
+    <select id="findById" parameterType="long" resultType="cote.hccare.domain.PostResponse">
+        SELECT
+            <include refid="postColumns" />
+        FROM
+            tb_post
+        WHERE
+            id = #{value}
+    </select>
+
+
+    <!-- 게시글 수정 -->
+    <update id="update" parameterType="cote.hccare.domain.PostRequest">
+        UPDATE
+            tb_post
+        SET
+            title = #{title},
+            content = #{content},
+            author = #{author}
+        WHERE
+            id = #{id}
+    </update>
+
+
+    <!-- 게시글 삭제 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM
+            tb_post
+        WHERE
+            id = #{id}
+    </delete>
+
+
+    <!-- 게시글 리스트 조회 -->
+    <select id="findAll" resultType="cote.hccare.domain.PostResponse">
+        SELECT
+            <include refid="postColumns" />
+        FROM
+            tb_post
+        ORDER BY
+            id
+    </select>
+
+</mapper>
