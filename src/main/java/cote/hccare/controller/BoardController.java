@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class BoardController {
 
-    @Autowired
-    PostService postService;
-
     @GetMapping
     public String showBoard() {
         return "/board";

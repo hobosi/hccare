@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Pie Chart</title>
+    <link rel="stylesheet" href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css">
+</head>
+<body>
+<div id="chart"></div>
+<script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
+<script>
+    const commonOptions = {
+        chart: { width: 700, height: 300 },
+    };
+
+    // 데이터를 받아오는 API 호출
+    fetch('/chart/getPieChartData')
+        .then(response => response.json())
+        .then(data => {
+                console.log(data);
+                const pieChartContainer = document.getElementById('chart');
+                const pieChart = new toastui.Chart.pieChart({ el: pieChartContainer, data: data.data, options: commonOptions });
+    });
+
+</script>
+</body>
+</html>
