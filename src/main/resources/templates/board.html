@@ -90,10 +90,8 @@
                         id = data.id;
                         grid.removeRow(rowKey);
                     }
-                    grid.refreshLayout();
                     grid.request('deleteData');
                 });
-                grid.refreshLayout();
             });
 
              appendBtn.addEventListener('click', () => {
@@ -108,12 +106,10 @@
 
             saveBtn.addEventListener('click', (e) => {
                 grid.request('createData');
-                grid.refreshLayout();
             });
 
             updateBtn.addEventListener('click', (e) => {
                 grid.request('updateData');
-                grid.refreshLayout();
             });
 
         });

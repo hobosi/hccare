@@ -24,7 +24,7 @@ public class PostService {
 
     public ToastUiResponse findPosts() {
         List<PostResponse> posts = postMapper.findAll();
-        // 게시판 데이터를 가져와서 Thymeleaf 템플릿으로 전달
+
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("contents", posts);
         resultMap.put("pagination", "");
